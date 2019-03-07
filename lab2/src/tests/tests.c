@@ -4,6 +4,17 @@
 
 #include "revert_string.c"
 
+
+void test2(void) {
+  char empty_string[] = "";
+  char big_string[] = "biggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg";
+
+  RevertString(empty_string);
+  CU_ASSERT_STRING_EQUAL_FATAL(empty_string, "");
+
+  RevertString(big_string);
+  CU_ASSERT_STRING_EQUAL_FATAL(big_string, "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggib");
+}
 void testRevertString(void) {
   char simple_string[] = "Hello";
   char str_with_spaces[] = "String with spaces";
@@ -40,6 +51,11 @@ int main() {
   /* NOTE - ORDER IS IMPORTANT - MUST TEST fread() AFTER fprintf() */
   if ((NULL == CU_add_test(pSuite, "test of RevertString function",
                            testRevertString))) {
+    CU_cleanup_registry();
+    return CU_get_error();
+  }
+  if ((NULL == CU_add_test(pSuite, "test2 of RevertString function",
+                           test2))) {
     CU_cleanup_registry();
     return CU_get_error();
   }
